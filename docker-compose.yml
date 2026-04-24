@@ -1,0 +1,35 @@
+services:
+  app-dev:
+    image: saurav11sarkardev/radis:dev
+    env_file:
+      - .env
+    container_name: radis-dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - '5000:5000'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: npm run start:dev
+    profiles: ['dev']
+
+  app-prod:
+    image: saurav11sarkardev/radis:prod
+    env_file:
+      - .env
+    container_name: radis-prod
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    ports:
+      - '5000:5000'
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    profiles: ['prod']
