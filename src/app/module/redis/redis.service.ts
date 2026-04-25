@@ -158,4 +158,22 @@ export class RedisService implements OnModuleInit {
     console.log('result', result);
     return result;
   }
+
+  async blpop(key: string, timeout: number) {
+    const result = await this.client.blPop(key, timeout);
+    console.log('result', result);
+    return result;
+  }
+
+  async brpop(key: string, timeout: number) {
+    const result = await this.client.brPop(key, timeout);
+    console.log('result', result);
+    return result;
+  }
+
+  async brpoplpush(source: string, destination: string, timeout: number) {
+    const result = await this.client.brPopLPush(source, destination, timeout);
+    console.log('result', result);
+    return result;
+  }
 }

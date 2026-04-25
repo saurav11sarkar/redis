@@ -146,4 +146,26 @@ export class RedisController {
       },
     };
   }
+
+  @Get('redis-list-blocked')
+  @ApiOperation({
+    summary: 'Test Redis List Blocked',
+  })
+  @HttpCode(HttpStatus.OK)
+  async testRedisListBlocked() {
+    const blpop = await this.redisService.blpop('name', 10);
+    console.log('blpop', blpop);
+    const brpop = await this.redisService.brpop('name', 10);
+    console.log('brpop', brpop);
+    const brpoplpush = await this.redisService.brpoplpush('name', 'name', 10);
+    console.log('brpoplpush', brpoplpush);
+    return {
+      message: 'Redis working',
+      data: {
+        blpop,
+        brpop,
+        brpoplpush,
+      },
+    };
+  }
 }
