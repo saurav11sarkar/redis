@@ -168,4 +168,47 @@ export class RedisController {
       },
     };
   }
+
+  @Get('redis-lindex')
+  @ApiOperation({
+    summary: 'Test Redis Lindex',
+  })
+  @HttpCode(HttpStatus.OK)
+  async testRedisLindex() {
+    // const lpush = await this.redisService.lpush(
+    //   'skill',
+    //   'reactjs',
+    //   'nodejs',
+    //   'mongodb',
+    //   'typescript',
+    //   'nestjs',
+    // );
+    // console.log('lindex', lpush);
+
+    const lindex = await this.redisService.lindex('skill', 2);
+    console.log('lindex', lindex);
+    return {
+      message: 'Redis working',
+      data: {
+        // lpush,
+        lindex,
+      },
+    };
+  }
+
+  @Get('redis-lset')
+  @ApiOperation({
+    summary: 'Test Redis Lset',
+  })
+  @HttpCode(HttpStatus.OK)
+  async testRedisLset() {
+    const lset = await this.redisService.lset('skill', 2, 'python');
+    console.log('lset', lset);
+    return {
+      message: 'Redis working',
+      data: {
+        lset,
+      },
+    };
+  }
 }

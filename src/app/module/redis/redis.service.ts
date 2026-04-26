@@ -176,4 +176,22 @@ export class RedisService implements OnModuleInit {
     console.log('result', result);
     return result;
   }
+
+  async lindex(key: string, index: number) {
+    const result = await this.client.lIndex(key, index);
+    console.log('result', result);
+    return result;
+  }
+
+  async lset(key: string, index: number, value: string) {
+    const result = await this.client.lSet(key, index, value);
+    console.log('result', result);
+    return result;
+  }
+
+  async lrem(key: string, count: number, value: string) {
+    const result = await this.client.lRem(key, count, value);
+    console.log('result', result);
+    return result;
+  }
 }
