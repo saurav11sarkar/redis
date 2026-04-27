@@ -211,4 +211,20 @@ export class RedisController {
       },
     };
   }
+
+  @Get('redis-ltrim')
+  @ApiOperation({
+    summary: 'Test Redis Ltrim',
+  })
+  @HttpCode(HttpStatus.OK)
+  async testRedisLtrim() {
+    const ltrim = await this.redisService.ltrim('number', 2, -1);
+    console.log('ltrim', ltrim);
+    return {
+      message: 'Redis working',
+      data: {
+        ltrim,
+      },
+    };
+  }
 }

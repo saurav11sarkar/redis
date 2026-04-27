@@ -194,4 +194,10 @@ export class RedisService implements OnModuleInit {
     console.log('result', result);
     return result;
   }
+
+  async ltrim(key: string, start: number, end: number) {
+    const result = await this.client.lTrim(key, start, end);
+    console.log('result', result);
+    return result;
+  }
 }
