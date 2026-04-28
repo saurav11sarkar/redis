@@ -200,4 +200,10 @@ export class RedisService implements OnModuleInit {
     console.log('result', result);
     return result;
   }
+
+  async sadd(key: string, ...values: string[]) {
+    const result = await this.client.sAdd(key, values);
+    console.log('result', result);
+    return result;
+  }
 }

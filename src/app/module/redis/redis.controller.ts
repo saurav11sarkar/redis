@@ -227,4 +227,27 @@ export class RedisController {
       },
     };
   }
+
+  @Get('redis-setadd')
+  @ApiOperation({
+    summary: 'Test Redis Setadd',
+  })
+  @HttpCode(HttpStatus.OK)
+  async testRedisSetadd() {
+    const sadd = await this.redisService.sadd(
+      'person',
+      'saurav',
+      'himani',
+      'kalyani',
+      'manish',
+      'himani',
+    );
+    console.log('sadd', sadd);
+    return {
+      message: 'Redis working',
+      data: {
+        sadd,
+      },
+    };
+  }
 }
