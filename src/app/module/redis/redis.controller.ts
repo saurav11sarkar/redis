@@ -243,10 +243,34 @@ export class RedisController {
       'himani',
     );
     console.log('sadd', sadd);
+
+    const sMeb = await this.redisService.sMeb('person');
+    console.log('sMeb', sMeb);
+
+    const srem = await this.redisService.srem('person', 'saurav');
+    console.log('srem', srem);
+    await this.redisService.sadd('person', 'hello', 'hi');
+    const sMeb2 = await this.redisService.sMeb('person');
+    console.log('sMeb2', sMeb2);
+
+    const sismember = await this.redisService.sismember('person', 'himani');
+    console.log('sismember', sismember);
+
+    const setadd1 = await this.redisService.sadd('setadd1', 'saurav', 'himani');
+    const setadd2 = await this.redisService.sadd('setadd2', 'saurav', 'himani');
+    const sinter = await this.redisService.sinter('setadd1', 'setadd2');
+    console.log('sinter', sinter);
+    console.log(setadd1, setadd2);
+
     return {
       message: 'Redis working',
       data: {
         sadd,
+        sMeb,
+        srem,
+        sMeb2,
+        sismember,
+        sinter,
       },
     };
   }

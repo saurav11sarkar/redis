@@ -206,4 +206,28 @@ export class RedisService implements OnModuleInit {
     console.log('result', result);
     return result;
   }
+
+  async sMeb(key: string) {
+    const result = await this.client.sMembers(key);
+    console.log('result', result);
+    return result;
+  }
+
+  async srem(key: string, value: string) {
+    const result = await this.client.sRem(key, value);
+    console.log('result', result);
+    return result;
+  }
+
+  async sismember(key: string, value: string) {
+    const result = await this.client.sIsMember(key, value);
+    console.log('result', result);
+    return result;
+  }
+
+  async sinter(...key: string[]) {
+    const result = await this.client.sInter(key);
+    console.log('result', result);
+    return result;
+  }
 }
