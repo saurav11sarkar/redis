@@ -274,4 +274,74 @@ export class RedisController {
       },
     };
   }
+
+  @Get('redis-zadd')
+  @ApiOperation({
+    summary: 'Test Redis Zadd',
+  })
+  @HttpCode(HttpStatus.OK)
+  async testRedisZadd() {
+    const zadd = await this.redisService.zadd(
+      'mark',
+      [83, 'chemistry'],
+      [99, 'maths'],
+      [100, 'english'],
+      [90, 'computer_science'],
+    );
+    console.log('zadd', zadd);
+    return {
+      message: 'Redis working',
+      data: {
+        zadd,
+      },
+    };
+  }
+
+  @Get('redis-zrange')
+  @ApiOperation({
+    summary: 'Test Redis Zrange',
+  })
+  @HttpCode(HttpStatus.OK)
+  async testRedisZrange() {
+    const zRangeWithScores = await this.redisService.zRangeWithScores(
+      'mark',
+      0,
+      -1,
+    );
+    console.log('zRangeWithScores', zRangeWithScores);
+    const zRevRange = await this.redisService.zRevRange('mark', 0, -1);
+    console.log('zRevRange', zRevRange);
+
+    const zRank = await this.redisService.zRank('mark', 'chemistry');
+    console.log('zRank', zRank);
+    return {
+      message: 'Redis working',
+      data: {
+        zRangeWithScores,
+        zRevRange,
+        zRank,
+      },
+    };
+  }
+
+  @Get('redis-hash')
+  @ApiOperation({
+    summary: 'Test Redis Hash',
+  })
+  @HttpCode(HttpStatus.OK)
+  async testRedisHash() {
+    const hset = await this.redisService.hset('person1', 'name', 'Saurav');
+    await this.redisService.hset('person1', 'wife', 'Himani');
+    await this.redisService.hset('person1', 'age', '30');
+    console.log('hset', hset);
+    const hget = await this.redisService.hget('person1', 'name');
+    console.log('hget', hget);
+    return {
+      message: 'Redis working',
+      data: {
+        hset,
+        hget,
+      },
+    };
+  }
 }

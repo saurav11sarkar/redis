@@ -230,4 +230,46 @@ export class RedisService implements OnModuleInit {
     console.log('result', result);
     return result;
   }
+
+  async zadd(key: string, ...args: [score: number, member: string][]) {
+    const numbers = args.map(([score, member]) => ({
+      score,
+      value: member,
+    }));
+    const result = await this.client.zAdd(key, numbers);
+    console.log('result', result);
+    return result;
+  }
+
+  async zRangeWithScores(key: string, start: number, end: number) {
+    const result = await this.client.zRangeWithScores(key, start, end);
+    console.log('result', result);
+    return result;
+  }
+
+  async zRevRange(key: string, start: number, end: number) {
+    const result = await this.client.zRangeWithScores(key, start, end, {
+      REV: true,
+    });
+    console.log('result', result);
+    return result;
+  }
+
+  async zRank(key: string, member: string) {
+    const result = await this.client.zRank(key, member);
+    console.log('result', result);
+    return result;
+  }
+
+  async hset(key: string, field: string, value: string) {
+    const result = await this.client.hSet(key, field, value);
+    console.log('result', result);
+    return result;
+  }
+
+  async hget(key: string, field: string) {
+    const result = await this.client.hGet(key, field);
+    console.log('result', result);
+    return result;
+  }
 }
