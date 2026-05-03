@@ -336,11 +336,59 @@ export class RedisController {
     console.log('hset', hset);
     const hget = await this.redisService.hget('person1', 'name');
     console.log('hget', hget);
+
+    const hgetAll = await this.redisService.hgetAll('person1');
+    console.log('hgetAll', hgetAll);
     return {
       message: 'Redis working',
       data: {
         hset,
         hget,
+        hgetAll,
+      },
+    };
+  }
+
+  @Get('redis-hash-incrby')
+  @ApiOperation({
+    summary: 'Test Redis Hash Increment By',
+  })
+  @HttpCode(HttpStatus.OK)
+  async testRedisHashIncrBy() {
+    const hset = await this.redisService.hset('person1', 'age', '30');
+    console.log('hset', hset);
+    const hincrby = await this.redisService.hincrby('person1', 'age', 10);
+    console.log('hincrby', hincrby);
+
+    const hdecrby = await this.redisService.hdecrby('person1', 'age', 20);
+    console.log('hdecrby', hdecrby);
+
+    const hkeys = await this.redisService.hkeys('person1');
+    console.log('hkeys', hkeys);
+
+    const hvalues = await this.redisService.hvalues('person1');
+    console.log('hvalues', hvalues);
+
+    const hdeleted = await this.redisService.hdeleted('person1', 'age');
+    console.log('hdeleted', hdeleted);
+
+    const hexist = await this.redisService.hexist('person1', 'name');
+    console.log('hexist', hexist);
+
+    const hlen = await this.redisService.hlen('person1');
+    console.log('hlen', hlen);
+
+    return {
+      message: 'Redis working',
+      data: {
+        hset,
+        hincrby,
+        hdecrby,
+        hkeys,
+        hvalues,
+        hdeleted,
+        hexist,
+        hlen,
       },
     };
   }

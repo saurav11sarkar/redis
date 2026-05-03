@@ -272,4 +272,52 @@ export class RedisService implements OnModuleInit {
     console.log('result', result);
     return result;
   }
+
+  async hgetAll(key: string) {
+    const result = await this.client.hGetAll(key);
+    console.log('result', result);
+    return result;
+  }
+
+  async hincrby(key: string, field: string, value: number) {
+    const result = await this.client.hIncrBy(key, field, value);
+    console.log('result', result);
+    return result;
+  }
+
+  async hdecrby(key: string, field: string, value: number) {
+    const result = await this.client.hIncrBy(key, field, -value);
+    console.log('result', result);
+    return result;
+  }
+
+  async hkeys(key: string) {
+    const result = await this.client.hKeys(key);
+    console.log('result', result);
+    return result;
+  }
+
+  async hvalues(key: string) {
+    const result = await this.client.hVals(key);
+    console.log('result', result);
+    return result;
+  }
+
+  async hdeleted(key: string, field: string) {
+    const result = await this.client.hDel(key, field);
+    console.log('result', result);
+    return result;
+  }
+
+  async hexist(key: string, field: string) {
+    const result = await this.client.hExists(key, field);
+    console.log('result', result);
+    return result;
+  }
+
+  async hlen(key: string) {
+    const result = await this.client.hLen(key);
+    console.log('result', result);
+    return result;
+  }
 }
