@@ -3,18 +3,24 @@ import { CreateAuthDto } from './dto/create-auth.dto';
 import { User, UserDocument } from '../user/entities/user.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import * as bcrypt from 'bcrypt';
 import * as jwt from '@nestjs/jwt';
 import config from '../../config';
 import sendMailer from 'src/app/helpers/sendMailer';
+import { createRedisClient, RedisClient } from 'src/app/helpers/redis';
 
 @Injectable()
 export class AuthService {
+  public redisClient: RedisClient;
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
     private readonly jwtService: jwt.JwtService,
   ) {}
+
+  async onModuleInit() {
+    this.redisClient = await createRedisClient();
+  }
 
   async register(CreateAuthDto: CreateAuthDto) {
     const user = await this.userModel.findOne({ email: CreateAuthDto.email });
@@ -27,6 +33,7 @@ export class AuthService {
   }
 
   async login(loginDto: { email: string; password: string }, res: Response) {
+    const key = `login attem:${loginDto.email}`;
     const user = await this.userModel
       .findOne({ email: loginDto.email })
       .select('+password');
@@ -39,6 +46,15 @@ export class AuthService {
       user.password,
     );
     if (!isPasswordMatch) {
+      const newAttemkey = await this.redisClient.incr(key);
+      if (newAttemkey === 1) {
+        await this.redisClient.expire(key, 60);
+      }
+      console.log({ newAttemkey });
+      if (newAttemkey >= 3) {
+        throw new HttpException('Too many attempts', 401);
+      }
+
       throw new HttpException('Incorrect password', 401);
     }
 
